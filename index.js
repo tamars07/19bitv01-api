@@ -7,6 +7,7 @@ const db = require('./db/db')
 const loginRouter = require('./routes/login')
 
 app.set('view engine','ejs')
+app.use(express.urlencoded({extended: false}))
 
 //Router
 app.use('/',loginRouter)
