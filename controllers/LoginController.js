@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs")
 const User = require("../models/User")
+const passport = require('passport')
 
 //handle all login, logout, register request
 const registerView = (req, res) => {
@@ -48,8 +49,29 @@ const registerUser = (req, res) => {
     })
 }
 
+const loginUser = (req, res) => {
+    const { email, password } = req.body
+    if(!email || !password){
+        console.log("Missing parameters")
+    }else{
+        passport.authenticate('local',{
+            successRedirect: '/dashboard',
+            failureRedirect: '/login',
+            failureFlash: true
+        })(req, res)
+    }
+}
+
+const dashboardView = (req,res) => {
+    res.render('dashboard', {
+        user: req.user
+    })
+}
+
 module.exports = {
     registerView,
     loginView,
-    registerUser
+    registerUser,
+    loginUser,
+    dashboardView
 }
